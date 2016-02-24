@@ -36,15 +36,18 @@ module ActionDispatch::Routing
         # get namespace name
         namespace_name = @scope[:as]
 
-        # clear scope so controller routes aren't namespaced
-        @scope = ActionDispatch::Routing::Mapper::Scope.new(
-          path:         "",
-          shallow_path: "",
-          constraints:  {},
-          defaults:     {},
-          options:      {},
-          parent:       nil
-        )
+        # ActionDispatch::Routing::Mapper::Scope.new added after 4.2
+        # So this is not working in 4.1, simply remove this for now.
+        # @TODO: Find a work around
+        # # clear scope so controller routes aren't namespaced
+        # @scope = ActionDispatch::Routing::Mapper::Scope.new(
+        #   path:         "",
+        #   shallow_path: "",
+        #   constraints:  {},
+        #   defaults:     {},
+        #   options:      {},
+        #   parent:       nil
+        # )
 
         mapping_name = resource.underscore.gsub('/', '_')
         mapping_name = "#{namespace_name}_#{mapping_name}" if namespace_name
