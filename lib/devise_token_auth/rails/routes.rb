@@ -40,14 +40,25 @@ module ActionDispatch::Routing
         # So this is not working in 4.1, simply remove this for now.
         # @TODO: Find a work around
         # # clear scope so controller routes aren't namespaced
-        # @scope = ActionDispatch::Routing::Mapper::Scope.new(
-        #   path:         "",
-        #   shallow_path: "",
-        #   constraints:  {},
-        #   defaults:     {},
-        #   options:      {},
-        #   parent:       nil
-        # )
+        if ActionDispatch::Routing::Mapper.const_defined?(:Scope)
+          @scope = ActionDispatch::Routing::Mapper::Scope.new(
+            path:         "",
+            shallow_path: "",
+            constraints:  {},
+            defaults:     {},
+            options:      {},
+            parent:       nil
+          )
+        else
+          @scope = {
+            path:         "",
+            shallow_path: "",
+            constraints:  {},
+            defaults:     {},
+            options:      {},
+            parent:       nil
+          }
+        end
 
         mapping_name = resource.underscore.gsub('/', '_')
         mapping_name = "#{namespace_name}_#{mapping_name}" if namespace_name
