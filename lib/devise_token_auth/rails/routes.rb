@@ -36,10 +36,9 @@ module ActionDispatch::Routing
         # get namespace name
         namespace_name = @scope[:as]
 
-        # ActionDispatch::Routing::Mapper::Scope.new added after 4.2
-        # So this is not working in 4.1, simply remove this for now.
-        # @TODO: Find a work around
-        # # clear scope so controller routes aren't namespaced
+        # ActionDispatch::Routing::Mapper::Scope.new was added after rails 4.2
+        # In rails 4.1, @scope is a Hash object        
+        # clear scope so controller routes aren't namespaced
         if ActionDispatch::Routing::Mapper.const_defined?(:Scope)
           @scope = ActionDispatch::Routing::Mapper::Scope.new(
             path:         "",
