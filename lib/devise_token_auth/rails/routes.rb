@@ -33,15 +33,28 @@ module ActionDispatch::Routing
         # get full url path as if it were namespaced
         full_path = "#{@scope[:path]}/#{opts[:at]}"
 
+        # ActionDispatch::Routing::Mapper::Scope.new was added after rails 4.2
+        # In rails 4.1, @scope is a Hash object        
         # clear scope so controller routes aren't namespaced
-        @scope = ActionDispatch::Routing::Mapper::Scope.new(
-          path:         "",
-          shallow_path: "",
-          constraints:  {},
-          defaults:     {},
-          options:      {},
-          parent:       nil
-        )
+        if ActionDispatch::Routing::Mapper.const_defined?(:Scope)
+          @scope = ActionDispatch::Routing::Mapper::Scope.new(
+            path:         "",
+            shallow_path: "",
+            constraints:  {},
+            defaults:     {},
+            options:      {},
+            parent:       nil
+          )
+        else
+          @scope = {
+            path:         "",
+            shallow_path: "",
+            constraints:  {},
+            defaults:     {},
+            options:      {},
+            parent:       nil
+          }
+        end
 
         devise_scope resource.underscore.gsub('/', '_').to_sym do
           # path to verify token validity
